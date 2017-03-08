@@ -21,17 +21,19 @@ using namespace std;
 class GridWorld {
 private:
 	int sizeX, sizeY;
-	int sgoal;
-	int lgoal[2];
-	int agent[2];
+	int goalX, goalY;
+	int agentX, agentY;
+	int goal_state;
+	int **state_list;
+	int **walls;
 public:
 	GridWorld(int, int, int, int);
 	int new_state(int,int);
-	int give_reward(int);
+	int get_reward(int);
 	void display(int);
 	bool found_goal(int);
-	void TestA();
-	int get_state();
+	void set_representation(bool);
+	void clear();
 };
 
 //*==============================
@@ -44,19 +46,24 @@ private:
 	GridWorld *world;
 	double e, a, g;	//Epsilon, Alpha, and Gamma
 	int size;
-public:
 	int state;
+	int time;
+	int origin;
+public:
 	Agent(int,double,double,double,GridWorld*);
 	void set_state(int);
-	// void decide();
-	// void action();
-	int get_state();
-	void get_array(int,int);
-	void ruleOfThumb();
-	void TestB();
-	void TestC();
-	// int greedy();
-	// void update(int);
+	void update(int,int);
+	int decide();
+	int action();
+	int action(FILE*);
+	void clear();
+	void display();
+	void reset();
+	int man_move(int);
+	void TestD();
+	void TestE();
+	void TestF(int,float);
+	void TestG();
 };//*/
 
 //===============================
@@ -64,5 +71,7 @@ public:
 //===============================
 
 void state2coord(int*,int,int);
+int coord2state(int,int,int);
+int rand_maximum(float*, int);
 
 #endif
