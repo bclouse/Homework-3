@@ -181,13 +181,14 @@ int Agent::action() {
 	int nstate;
 
 	while (!(world->found_goal(state))) {
-
 		direction = decide();
 		nstate = world->new_state(state,direction);
 		update(nstate,direction);
 		testing++;
 	}
+	TestB();
 	state = origin;
+
 	return testing;
 }
 
@@ -237,26 +238,63 @@ void Agent::reset() {
 	}
 }
 
-void Agent::TestD() {
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < 4; j++) {
-			assert(Q_Table[i][j] <= 100);
+void Agent::ruleOfThumb() {
+	int old;
+	int dir = 0;
+	bool left = true;
+	int count;
+
+	while (!world->found_goal(state) && count < 10000) {
+		old = state;
+		if (dir == 0) {
+			state = world->new_state(state,1);
+		} else if (dir == 1) {
+			state = world->new_state(state,2);
+			if (left) {
+				dir = 2; left = false;
+			} else {
+				dir = 0; left = true;
+			}
+		} else {
+			state = world->new_state(state,3);
 		}
+
+		if (old == state) dir = 1;
+		count++;
 	}
+	TestA();
+	world->display(state);
 }
 
-void Agent::TestE() {
-	assert(state == origin);
+void Agent::TestA() {
+	assert(!world->found_goal(state));
+	cout << "\nRule of Thumb Failed\n\n";
 }
 
-void Agent::TestF(int min,float val) {
-	float range = min*0.5;
-	assert(val >= min-range && val <= min+range);
+void Agent::TestB()  {
+	assert(world->found_goal(state));
 }
 
-void Agent::TestG() {
-	assert(state == origin);
-}
+// void Agent::TestD() {
+// 	for (int i = 0; i < size; i++) {
+// 		for (int j = 0; j < 4; j++) {
+// 			assert(Q_Table[i][j] <= 100);
+// 		}
+// 	}
+// }
+
+// void Agent::TestE() {
+// 	assert(state == origin);
+// }
+
+// void Agent::TestF(int min,float val) {
+// 	float range = min*0.5;
+// 	assert(val >= min-range && val <= min+range);
+// }
+
+// void Agent::TestG() {
+// 	assert(state == origin);
+// }
 
 //===============================
 //	Functions

@@ -60,10 +60,13 @@ public:
 	void display();
 	void reset();
 	int man_move(int);
-	void TestD();
-	void TestE();
-	void TestF(int,float);
-	void TestG();
+	void ruleOfThumb();
+	void TestA();
+	void TestB();
+	// void TestD();
+	// void TestE();
+	// void TestF(int,float);
+	// void TestG();
 };//*/
 
 //===============================

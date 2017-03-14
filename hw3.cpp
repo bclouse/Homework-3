@@ -25,45 +25,43 @@ int main() {
 	int min;
 	char c;
 	bool grid_rep = true;
-	bool manual;
+	bool use_Q_Learner;
 	int a_size;
 	char dir;
 	int dummy = 0;
 
-	cout << "Do you want to control the agent (Y/N)? ";
+	cout << "Do you want to use the Q_Learner (Y/N)? ";
 	while (1) {
 		cin >> c;
 		if (c == 'Y') {
-			manual = true;
+			use_Q_Learner = true;
 			break;
 		} else if (c == 'N') {
-			manual = false;
+			use_Q_Learner = false;
 			break;
 		} else {
 			cout << "Invalid Input. ";
 		}
 	}
-	if (!manual) {
-		cout << "Do you want a grid representation (Y/N)? ";
-		while (1) {
-			cin >> c;
-			if (c == 'Y') {
-				grid_rep = true;
-				break;
-			} else if (c == 'N') {
-				grid_rep = false;
-				break;
-			} else {
-				cout << "Invalid Input. ";
-			}
-		}
-	}
+	// if (use_Q_Learner) {
+	// 	cout << "Do you want a grid representation (Y/N)? ";
+	// 	while (1) {
+	// 		cin >> c;
+	// 		if (c == 'Y') {
+	// 			grid_rep = true;
+	// 			break;
+	// 		} else if (c == 'N') {
+	// 			grid_rep = false;
+	// 			break;
+	// 		} else {
+	// 			cout << "Invalid Input. ";
+	// 		}
+	// 	}
+	// }
 	cout << "How large (6-15) do you want the square grid? ";
 	cin >> n;
-	if (!manual) {
-		cout << "How many Statisical Runs (1-30)? ";
-		cin >> sr;
-	}	
+	cout << "How many Statisical Runs (1-30)? ";
+	cin >> sr;
 
 	info1 = new float[iter]();
 
@@ -71,11 +69,10 @@ int main() {
 
 	int size[2] = {n,n};
 	int goal[2] = {n-2,n-2};
-	if (grid_rep) {
-		a_size = size[0]*size[1];	
-	} else {
-		a_size = 9;
-	}
+	a_size = size[0]*size[1];
+	// else {
+	// 	a_size = 9;
+	// }
 	GridWorld grid(size[0],size[1],goal[0],goal[1]);
 	grid.set_representation(grid_rep);
 	Agent Dexter(a_size, 0.1, 0.1, 0.9, &grid);
@@ -90,7 +87,7 @@ int main() {
 		// Jeff.set_state(0);
 		// Bobby.set_state(0);
 	}
-	if (!manual) {
+	if (use_Q_Learner) {
 		for (int j = 0; j < sr; j++) {
 			for (int i = 0; i < 1000; i++) {
 				if (i == 999 && j == 0) {
@@ -103,12 +100,12 @@ int main() {
 				// info2[i] += Jeff.action();
 				// info3[i] += Bobby.action();
 				if (grid_rep) {
-					Dexter.TestE();
+					// Dexter.TestE();
 				} else {
-					Dexter.TestG();
+					// Dexter.TestG();
 				}
 			}
-			Dexter.TestD();
+			// Dexter.TestD();
 			Dexter.reset();
 			// Jeff.reset();
 			// Bobby.reset();
@@ -123,21 +120,22 @@ int main() {
 		Dexter.display();
 		fclose(learning);
 	} else {
-		while (!grid.found_goal(dummy)) {
-			Dexter.display();
-			cout << ">> ";
-			do {
-				cin >> dir;
-			} while (dir != 'w' && dir != 'a' && dir != 's' & dir != 'd');
-			switch (dir) {
-				case 'w': dummy = Dexter.man_move(0); break;
-				case 'd': dummy = Dexter.man_move(1); break;
-				case 's': dummy = Dexter.man_move(2); break;
-				case 'a': dummy = Dexter.man_move(3); break;
-			}
-		}
-		Dexter.display();
-		cout << "Found Goal!\n";
+		Dexter.ruleOfThumb();
+		// while (!grid.found_goal(dummy)) {
+		// 	Dexter.display();
+		// 	cout << ">> ";
+		// 	do {
+		// 		cin >> dir;
+		// 	} while (dir != 'w' && dir != 'a' && dir != 's' & dir != 'd');
+		// 	switch (dir) {
+		// 		case 'w': dummy = Dexter.man_move(0); break;
+		// 		case 'd': dummy = Dexter.man_move(1); break;
+		// 		case 's': dummy = Dexter.man_move(2); break;
+		// 		case 'a': dummy = Dexter.man_move(3); break;
+		// 	}
+		// }
+		// Dexter.display();
+		// cout << "Found Goal!\n";
 
 	}
 	grid.clear();
