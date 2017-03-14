@@ -17,8 +17,13 @@ GridWorld::GridWorld(int sx, int sy, int gx, int gy) {
 		state_list[i] = new int[sy]();
 		walls[i] = new int[sx]();
 	}
-	walls[goalX][goalY-1] = 1;
-	walls[goalX-1][goalY] = 1;
+	FILE *fp = fopen("walls.txt", "r");
+	for (int i = 0; i < sy; i++) {
+		for (int j = 0; j < sx; j++) {
+			fscanf(fp, "%d ", &(walls[j][i]));
+		}
+	}
+	fclose(fp);
 }
 //*
 int GridWorld::new_state(int agent_state, int direction) {
